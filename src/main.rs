@@ -76,6 +76,10 @@ impl Machine {
             let current_op_code = self.memory[self.pc];
             let instruction_len = match current_op_code {
 
+                // ==========================
+                // ========== 0x1_ ==========
+                // ==========================
+
                 // load
                 0x10 => {
                     let src = self.memory[self.pc + 1];
@@ -96,6 +100,26 @@ impl Machine {
                     2
                 }
 
+                // store immediate
+                0x13 => {
+                    let val = self.memory[self.pc + 1];
+                    let dst = self.memory[self.pc + 2];
+                    self.memory[dst] = val;
+                    3
+                }
+
+                // move
+                0x14 => {
+                    let src = self.memory[self.pc + 1];
+                    let dst = self.memory[self.pc + 2];
+                    self.memory[dst] = self.memory[src];
+                    3
+                }
+
+                // ==========================
+                // ========== 0x2_ ==========
+                // ==========================
+
                 // jump
                 0x20 => {
                     self.pc = self.memory[self.pc + 1];
@@ -112,9 +136,27 @@ impl Machine {
                     }
                 }
 
+                // ==========================
+                // ========== 0x3_ ==========
+                // ==========================
+
+                // add
+                0x30 => {
+                    let src = self.memory[self.pc + 1];
+                    self.acc = self.acc.wrapping_add(self.memory[src]);
+                    2
+                }
+
                 // add immediate
                 0x31 => {
                     self.acc = self.acc.wrapping_add(self.memory[self.pc + 1]);
+                    2
+                }
+
+                // subtract
+                0x32 => {
+                    let src = self.memory[self.pc + 1];
+                    self.acc = self.acc.wrapping_sub(self.memory[src]);
                     2
                 }
 
@@ -124,6 +166,35 @@ impl Machine {
                     2
                 }
 
+                // shift right
+                0x34 => {
+                    self.acc = self.acc >> 1;
+                    1
+                }
+
+                // shift left
+                0x35 => {
+                    self.acc = self.acc << 1;
+                    1
+                }
+
+                // and
+                0x36 => {
+                    let src = self.memory[self.pc + 1];
+                    self.acc = self.acc & self.memory[src];
+                    2
+                }
+
+                // and immediate
+                0x37 => {
+                    self.acc = self.acc & self.memory[self.pc + 1];
+                    2
+                }
+
+                // ==========================
+                // ========== 0x4_ ==========
+                // ==========================
+
                 // print
                 0x40 => {
                     let src = self.memory[self.pc + 1];
@@ -132,6 +203,10 @@ impl Machine {
                     println!("{}", String::from_utf8_lossy(chars));
                     2
                 }
+
+                // ==========================
+                // ========== 0x5_ ==========
+                // ==========================
 
                 // stop
                 0x50 => return,
