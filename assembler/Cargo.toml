@@ -1,0 +1,10 @@
+cargo-features = ["edition"]
+
+[package]
+name = "assembler"
+version = "0.1.0"
+authors = ["Lukas Kalbertodt <lukas.kalbertodt@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+term-painter = "0.2.4"
