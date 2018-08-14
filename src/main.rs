@@ -156,7 +156,8 @@ impl Machine {
 
                 // add immediate
                 0x31 => {
-                    self.acc = self.acc.wrapping_add(self.memory[self.pc.wrapping_add(1)]);
+                    let add = self.memory[self.pc.wrapping_add(1)];
+                    self.acc = self.acc.wrapping_add(add);
                     2
                 }
 
@@ -169,7 +170,8 @@ impl Machine {
 
                 // substract immediate
                 0x33 => {
-                    self.acc = self.acc.wrapping_sub(self.memory[self.pc.wrapping_add(1)]);
+                    let sub = self.memory[self.pc.wrapping_add(1)];
+                    self.acc = self.acc.wrapping_sub(sub);
                     2
                 }
 
