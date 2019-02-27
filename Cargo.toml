@@ -3,4 +3,7 @@ name = "shit-cpu-emu"
 version = "0.1.0"
 authors = ["Johan M. von Behren <johan@vonbehren.eu>"]
 
+[workspace]
+members=["assembler"]
+
 [dependencies]
